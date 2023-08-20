@@ -2,7 +2,7 @@
   "name": "ppt_witty",
   "private": true,
   "scripts": {
-    "build": "slidev build",
+    "build": "slidev build --base /ppt_repository/ppt_witty/dist/",
     "dev": "slidev --open",
     "export": "slidev export"
   },
