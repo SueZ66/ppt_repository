@@ -91,12 +91,15 @@ Here is another comment.
 ---
 layout: default
 hideInToc: true
+transition: slide-left
 ---
 
 # 目录
 
 <Toc></Toc>
 
+---
+transition: slide-left
 ---
 
 
@@ -166,6 +169,7 @@ fast api 实现问答服务。
 
 ---
 hideInToc: true
+transition: slide-left
 ---
 
 # 各模块实现
@@ -221,6 +225,7 @@ Embeddings 服务请求次数有限制，过快会报-2006 - 请求过于频繁�
 
 ---
 hideInToc: true
+transition: slide-left
 ---
 
 # 遇到的问题
@@ -235,6 +240,8 @@ hideInToc: true
 ## 4.7.开发时所用虚拟环境
 virtualenv，可以防止依赖污染，生成依赖文件时不会包含无用依赖。
 
+---
+transition: slide-left
 ---
 
 # 后续规划
@@ -252,6 +259,8 @@ virtualenv，可以防止依赖污染，生成依赖文件时不会包含无用�
 4. 提示词保护
 
 ---
+transition: slide-left
+---
 
 # 可拓展的业务场景
 
@@ -268,6 +277,7 @@ virtualenv，可以防止依赖污染，生成依赖文件时不会包含无用�
 ---
 layout: center
 class: text-center
+transition: slide-left
 ---
 
 # END
