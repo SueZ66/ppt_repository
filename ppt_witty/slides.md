@@ -13,11 +13,11 @@ drawings:
   persist: false
 transition: slide-left
 title: llama-index 工程实践
+hideInToc: true
 ---
 
 # llama-index 工程实践
 
-Presentation slides for developers
 
 <div class="pt-12">
   <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
@@ -41,24 +41,31 @@ The last comment block of each slide will be treated as slide notes. It will be 
 
 ---
 transition: fade-out
+hideInToc: true
+layout: two-cols
 ---
 
-# What is Slidev?
+# LLM四个知道?
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+- 📝 **[CLiB中文大模型能力评测榜单](https://github.com/jeinlee1991/chinese-llm-benchmark)**
+- 🎨 **[为您的 NLP 用例选择正确的语言模型](https://medium.com/towards-data-science/choosing-the-right-language-model-for-your-nlp-use-case-1288ef3c4929)**
+- 🤗 **[hugging face](https://discuss.huggingface.co/)**
+- 🤹 **Interactive** 
+- 🎥 **Recording** 
+- 📤 **Portable**
+- 🛠 **Hackable**
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
-
-<br>
 <br>
 
 Read more about [Why Slidev?](https://sli.dev/guide/why)
+
+::right::
+
+<img
+  class="absolute top-1/4 right-0 w-100 opacity-100"
+  src="/image_1.png"
+/>
+
 
 <!--
 You can have `style` tag in markdown to override the style for the current page.
@@ -83,351 +90,185 @@ Here is another comment.
 
 ---
 layout: default
+hideInToc: true
 ---
 
-# Table of contents
-
-```
-<Toc minDepth="1" maxDepth="5"></Toc>
-```
+# 目录
 
 <Toc></Toc>
 
 ---
-transition: slide-up
 
-level: 2
+
+# 写在前面
+
+##  1.1.背景介绍
+
+项目中台现有很多项目数据、用研数据，但是由于检索难度较大，无法很好的将数据使用起来；用研提供了使用LlamaIndex对中台现存数据进行处理，方便用户获取其中信息的方案；由开发对该方案进行工程化及部署
+
+## 1.2.llama-index是什么
+
+LlamaIndex（后简称llama）是一个将大语言模型（Large Language Models, LLMs）和外部数据连接在一起的工具。常见工作流程为：1.读取并解析文档 2.构建索引 3.查询索引并对话大模型
+可以用于暂时替代大模型外部数据预训练的使用场景。
+
+链接：
+1. [对llama-index的理解](http://cf.myhexin.com/pages/viewpage.action?pageId=1004217345)
+2. [llama-index开发文档](https://gpt-index.readthedocs.io/en/latest/)
+
+---
+layout: two-cols
 ---
 
-# Navigation
+# 工程化设计
 
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
+<br>
 
-### Keyboard Shortcuts
-
-|     |     |
-| --- | --- |
-| <kbd>right</kbd> / <kbd>space</kbd>| next animation or slide |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
-
-<!-- https://sli.dev/guide/animations.html#click-animations -->
 <img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
+  class="absolute top-1/6 left-0 w-100 opacity-100"
+  src="/image_3.jpg"
 />
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
+
+::right::
+
+<img
+  class="absolute top-1/4 right-0 w-100 opacity-100"
+  src="/image_2.jpg"
+/>
 
 ---
-layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
+transition: slide-up
 ---
 
-# Code
+# 各模块实现
+## 3.1.Azure 服务接入
+llama 底层使用的是 langchain 库，接入 Azure openai 时需要实现对应的 LLM 类和 Embeddings 类来调用服务。
 
-Use code snippets and get the highlighting directly![^1]
+## 3.2.生成索引
+调用 embeddings 服务对目标内容生成索引。
 
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
+## 3.3.设置prompt
+你是同花顺用户研究院的知识库，存入了大量的调研报告，负责准确回答调研问题.你的回答需要满足...
 
-function updateUser(id: number, update: User) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
-}
+---
+hideInToc: true
+transition: slide-up
+---
+
+# 各模块实现
+## 3.4.根据索引，调用 gpt 服务生成答案
+llama 根据索引和问题生成问句，调用gpt服务。
+
+## 3.5.问答服务提供
+fast api 实现问答服务。
+
+## 3.6.增量及持久化
+对新增的文章，可以增量生成索引；使用有状态容器以保存索引文件。
+
+---
+hideInToc: true
+---
+
+# 各模块实现
+## 3.7.接入数据库
+连接数据库，直接读取其中用研报告数据；执行定时任务，生成对应文件的索引。
+
+## 3.8.不同类型文件解析
+xlsx：pandas 进行解析
+
+## 3.9.其他基础服务接入
+包括健康检查、elk、大中台服务等；
+执行健康检查的 readiness.sh 文件中也不能使用 netstat 等命令，可以使用提供一个专门接口给容器健康检查探针的方式进行；
+日志接入使用 loguru 库，但也不支持直接输出 json 格式的日志，需要进行加工。
+
+---
+transition: slide-up
+---
+
+# 遇到的问题
+## 4.1.内网 pip 源及容器镜像构建
+- 内网pip源：http://repositories.myhexin.com:8081/repository/pypi-public/simple/
+- python容器镜像：hub-dev.hexin.cn/knowledge-graph/python:v3.8（此镜像不包含无关或者冗余命令，是最简洁的镜像 以上为镜像提供者原话；该镜像没有netstat没有vim，且安装不方便，有此类命令使用需求的需要另寻它法）
+
+---
+hideInToc: true
+transition: slide-up
+---
+
+# 遇到的问题
+## 4.2.Transformer 模型公司网络条件下无法下载
+报错
 ```
-
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
-
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
-
-<style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
----
-
-# Components
-
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host=‘huggingface.co’, port=443): Max retries exceeded with url: /api/models/bert-base-cased (Caused by NewConnectionError(’<urllib3.connection.HTTPSConnection object at 0x7f2d791ce310>: Failed to establish a new connection: [Errno -2] Name or service not known’))
 ```
+<img
+  class="left-0 w-140 opacity-100"
+  src="/image_4.jpg"
+/>
 
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
-
+解决：科学上网，前往huggingface.co下载gpt2模型，置于项目根目录，llama会读取本地模型以替代该下载步骤。
 
 ---
-class: px-20
+hideInToc: true
+transition: slide-up
 ---
 
-# Themes
+# 遇到的问题
+## 4.3.Azure api 请求次数限制
+Embeddings 服务请求次数有限制，过快会报-2006 - 请求过于频繁；增加请求间时间间隔，且对应增加了初始化索引时的终止程序逻辑。
 
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="-t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
-
-</div>
-
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
+## 4.4.python 镜像相关
+在windows开发，linux部署的情况下需要注意，生成 requirement.txt 时，记得删掉win专用的依赖，在构建镜像安装依赖时会报错。
 
 ---
-preload: false
+hideInToc: true
 ---
 
-# Animations
+# 遇到的问题
+## 4.5.容器中生成索引时，会出现索引存储失败的情况
+一个造成不小困扰的不知名问题：最初版本在初始化时，会先生成索引文件（这一步骤正常），后会一次性执行20～30篇文章的索引生成；观察容器执行日志，执行过程及产生的索引内容全部正常，在所有索引生成完成时，容器会卡住10s左右的时间，随后恢复，但是检查索引文件，会发现写入失败，索引丢掉了。
+原因分析：1、文件写入有限制 2、大文件写入卡住了 3、写入进程挂起时间太长
+解决：新增了一个可以设置单次生成索引文章数的接口；并增加fastapi后台执行逻辑。
 
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
+## 4.6.容器数据持久化
+配置有状态容器后需要对正式容器进行改动；如果配置有改动的话还需要删除容器重新发布才能生效。
 
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
-</div>
-```
-
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn More](https://sli.dev/guide/animations.html#motion)
-
-</div>
+## 4.7.开发时所用虚拟环境
+virtualenv，可以防止依赖污染，生成依赖文件时不会包含无用依赖。
 
 ---
 
-# LaTeX
+# 后续规划
+## 5.1.功能优化
+出并尝试解答有关用户指定知识点的三个关键问题：其来源、其本质、其发展。
+可以告知引用的答案源于哪些文章
 
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
+## 5.2.服务支持多轮
+在服务层面实现多轮对话的支持，而不是在接口调用是拼接；可以实现追溯来源的功能。
+
+## 5.3.答案约束
+1. 对于不在你知识库中的信息, 明确告知用户你不知道
+2. 你不擅长客套, 不会进行没有意义的夸奖和客气对话
+3. 解释完概念即结束对话, 不会询问是否有其它问题
+4. 提示词保护
+
+---
+
+# 可拓展的业务场景
+
+## 6.1.用户留言反馈
 
 <br>
 
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
+## 6.2.用研数据
 
 <br>
 
-[Learn more](https://sli.dev/guide/syntax#latex)
-
----
-
-# Diagrams
-
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-4 gap-5 pt-4 -mb-6">
-
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
-
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
-
-```mermaid
-mindmap
-  root((mindmap))
-    Origins
-      Long history
-      ::icon(fa fa-book)
-      Popularisation
-        British popular psychology author Tony Buzan
-    Research
-      On effectivness<br/>and features
-      On Automatic creation
-        Uses
-            Creative techniques
-            Strategic planning
-            Argument mapping
-    Tools
-      Pen and paper
-      Mermaid
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
-```
-
-</div>
-
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
-
----
-src: ./pages/multiple-entries.md
-hide: false
----
+## 6.3. 。。。
 
 ---
 layout: center
 class: text-center
 ---
 
-# Learn More
+# END
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
