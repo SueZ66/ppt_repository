@@ -40,31 +40,44 @@ The last comment block of each slide will be treated as slide notes. It will be 
 -->
 
 ---
-transition: fade-out
+transition: slide-up
 hideInToc: true
-layout: two-cols
 ---
 
 # LLM四个知道?
 
+- 🤹 **对于大模型 in-context learning能力的分析和可解释性研究** What Can Transformers Learn In-Context? A Case Study of Simple Function Classes
+What learning algorithm is in-context learning? Investigations with linear models
+Transformers Learn In-Context by Gradient Descent
+A Closer Look at In-Context Learning under Distribution Shifts
+- 🎥 **对大模型高效微调（parameter-efficient fine-tune， PEFT）方法的研究** LoRA: LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS
+Prefix Tuning: P-Tuning v2: Prompt Tuning Can Be Comparable to Fine-tuning Universally Across Scales and Tasks
+Prompt Tuning: The Power of Scale for Parameter-Efficient Prompt Tuning
+P-Tuning: GPT Understands, Too
+- 🛠 **对大模型参数编辑方法的研究** Modifying Memories in Transformer Models
+Memory-Based Model Editing at Scale
+Locating and Editing Factual Associations in GPT
 - 📝 **[CLiB中文大模型能力评测榜单](https://github.com/jeinlee1991/chinese-llm-benchmark)**
 - 🎨 **[为您的 NLP 用例选择正确的语言模型](https://medium.com/towards-data-science/choosing-the-right-language-model-for-your-nlp-use-case-1288ef3c4929)**
 - 🤗 **[hugging face](https://discuss.huggingface.co/)**
-- 🤹 **Interactive** 
-- 🎥 **Recording** 
-- 📤 **Portable**
-- 🛠 **Hackable**
+
+---
+transition: fade-out
+hideInToc: true
+---
+
+<img
+  class="w-100 opacity-100"
+  src="/image_1.png"
+/>
 
 <br>
 
-Read more about [Why Slidev?](https://sli.dev/guide/why)
-
-::right::
-
-<img
-  class="absolute top-1/4 right-0 w-100 opacity-100"
-  src="/image_1.png"
-/>
+### 资讯获取
+1.	微信公众号：新智元、极客公园、夕小瑶科技说
+2.	B站：李沐
+3.	个人博客：[苏剑林](https://kexue.fm/)
+4.	机器学习会议：NIPS、ICML、ICLR、ACL
 
 
 <!--
@@ -278,6 +291,7 @@ transition: slide-left
 layout: center
 class: text-center
 transition: slide-left
+hideInToc: true
 ---
 
 # END
